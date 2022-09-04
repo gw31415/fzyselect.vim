@@ -50,8 +50,8 @@ fu! fzyselect#start(items, opts, on_choice)
 		let s:on_choice = a:on_choice
 		keepa bo new | setl bt=nofile bh=delete noswf | cal s:put(s:label)
 		aug fzyesc | au WinClosed <buffer> cal s:esc() | aug END
-		nn <buffer><silent> i <cmd>cal <SID>fzy()<cr>
-		nn <buffer><silent> <esc> <cmd>close<cr>
-		nn <buffer><silent> <cr> <cmd>cal <SID>enter()<cr>
+		nn <buffer> i <cmd>cal <SID>fzy()<cr>
+		nn <buffer> <esc> <cmd>close<cr>
+		nn <buffer> <cr> <cmd>cal <SID>enter()<cr>
 	en
 endfu
