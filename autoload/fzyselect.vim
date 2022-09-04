@@ -37,7 +37,7 @@ fu! s:cr()
 	let i = index(s:li, dp)
 	let s:li = []
 	au! fzyesc
-	close
+	clo
 	cal s:cb(s:dict[dp], i + 1)
 endfu
 
@@ -51,7 +51,7 @@ fu! fzyselect#start(items, opts, cb) abort
 		keepa bo new | setl bt=nofile bh=delete noswf | cal s:put(s:li)
 		aug fzyesc | au WinClosed <buffer> cal s:esc() | aug END
 		nn <buffer> i <cmd>cal <SID>i()<cr>
-		nn <buffer> <esc> <cmd>close<cr>
+		nn <buffer> <esc> <cmd>clo<cr>
 		nn <buffer> <cr> <cmd>cal <SID>cr()<cr>
 	en
 endfu
