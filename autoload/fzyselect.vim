@@ -27,16 +27,16 @@ fu! s:fzy()
 	cal input('>>> ') | au! fzy
 endfu
 
-fu! s:cancel()
+fu! s:esc()
 	let s:label = []
 	cal s:on_choice(v:null, v:null)
-	close
 endfu
 
 fu! s:enter()
 	let dp = getline('.')
 	let i = index(s:label, dp)
 	let s:label = []
+	au! fzyesc
 	close
 	cal s:on_choice(s:dict[dp], i + 1)
 endfu
@@ -45,11 +45,11 @@ fu! fzyselect#start(items, opts, on_choice)
 	if empty(s:label)
 		for i in a:items
 			let l = get(a:opts, 'format_item', {j -> type(j)==v:t_string ? j : string(j)})(i)
-			cal add(s:label, l) | let s:dict[i] = l
+			cal add(s:label, l) | let s:dict[l] = i
 		endfo
 		let s:on_choice = a:on_choice
 		keepa bo 0new | setl bt=nofile bh=delete noswf | cal s:put(s:label)
-		au WinClosed <buffer> cal s:cancel()
+		aug fzyesc | au WinClosed <buffer> cal s:esc() | aug END
 		nn <buffer><silent> i <cmd>cal <SID>fzy()<cr>
 		nn <buffer><silent> <esc> <cmd>close<cr>
 		nn <buffer><silent> <cr> <cmd>cal <SID>enter()<cr>
