@@ -38,6 +38,27 @@ you can directly assign the function `fzyselect.start`.
 vim.ui.select = require 'fzyselect'.start
 ```
 
+## How to use
+Only one function `fzyselect#start` is provided
+(two if you includes `require 'fzyselect'.start` exported for Lua.).
+
+You can use similar to `vim.ui.select`.
+Please see [this document](https://neovim.io/doc/user/lua.html#vim.ui.select()).
+
+### Vim Scripts
+```vim
+cal fzyselect#start(['apple', 'banana', 'chocolate'],
+	\ {}, {i->append('.', i)})
+```
+
+### Lua
+```lua
+require 'fzyselect'.start({'apple', 'banana', 'chocolate'}, {},
+	function(i)
+		vim.fn.append('.', i)
+	end)
+```
+
 ## Configuration Example
 
 ### Lines
