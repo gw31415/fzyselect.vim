@@ -1,10 +1,11 @@
 # fzyselect.vim
 **fzyselect.vim** is a simple fuzzy selector plugin of Vim.
 
-![rec](https://user-images.githubusercontent.com/24710985/188317424-1df9ebb9-22e7-4259-9206-eaa96454ea26.gif)
+https://user-images.githubusercontent.com/24710985/188317718-5a136fd2-7f0f-4115-bb8f-cb34fd9605ec.mov
+
 
 ## Introduction
-The `vim.ui.select` implemented in Neovim is simple but extensible.
+The `vim.ui.select` implemented in Neovim is simple and extensible.
 There are also several well-designed extension plugins based on it
 (e.g. [dressing.nvim](https://github.com/stevearc/dressing.nvim)).
 
