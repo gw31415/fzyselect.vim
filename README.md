@@ -1,6 +1,8 @@
 # fzyselect.vim
 **fzyselect.vim** is a simple fuzzy selector plugin of Vim.
 
+![rec](https://user-images.githubusercontent.com/24710985/188317424-1df9ebb9-22e7-4259-9206-eaa96454ea26.gif)
+
 ## Introduction
 The `vim.ui.select` implemented in Neovim is simple but extensible.
 There are also several well-designed extension plugins based on it
@@ -32,7 +34,7 @@ use 'gw31415/fzyselect.vim'
 
 ### For Neovim users: `vim.ui.select`
 If you want to replace `vim.ui.select` with this plugin's,
-you can directly assign the function `fzyselect.start`.
+you can directly assign the function `require 'fzyselect'.start`.
 
 ```lua
 vim.ui.select = require 'fzyselect'.start
@@ -40,7 +42,7 @@ vim.ui.select = require 'fzyselect'.start
 
 ## How to use
 Only one function `fzyselect#start` is provided
-(two if you includes `require 'fzyselect'.start` exported for Lua.).
+(two if you includes `require 'fzyselect'.start` exported for Lua).
 
 You can use similar to `vim.ui.select`.
 Please see [this document](https://neovim.io/doc/user/lua.html#vim.ui.select()).
@@ -58,6 +60,15 @@ require 'fzyselect'.start({'apple', 'banana', 'chocolate'}, {},
 		vim.fn.append('.', i)
 	end)
 ```
+
+On the split window that appears then you can use the usual keymaps you set up,
+but two keymaps are added.
+
+| mode | key  |    |
+:---: | :---: | :---
+| `n` | `i` | Start fuzzy search. |
+| `n` | `<esc>` | Close the window. |
+
 
 ## Configuration Example
 
