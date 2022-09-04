@@ -63,11 +63,12 @@ require 'fzyselect'.start({'apple', 'banana', 'chocolate'}, {},
 ```
 
 On the split window that appears then you can use the usual keymaps you set up,
-but two keymaps are added.
+but three keymaps are added.
 
-| mode | key  |    |
+| mode | key | |
 :---: | :---: | :---
 | `n` | `i` | Start fuzzy search. |
+| `n` | `<cr>` | Select the item. |
 | `n` | `<esc>` | Close the window. |
 
 
