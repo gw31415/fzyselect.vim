@@ -2,7 +2,7 @@ return {
 	init = function()
 		vim.ui.select = function(items, opts, on_choice)
 			return vim.fn['fzyselect#start'](
-				items, opts, function(item, idx)
+				items, opts or {}, function(item, idx)
 				if item == vim.NIL or idx == vim.NIL then
 					on_choice()
 				else
