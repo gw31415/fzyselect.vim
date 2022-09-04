@@ -48,7 +48,7 @@ fu! fzyselect#start(items, opts, on_choice)
 			cal add(s:label, l) | let s:dict[l] = i
 		endfo
 		let s:on_choice = a:on_choice
-		keepa bo 0new | setl bt=nofile bh=delete noswf | cal s:put(s:label)
+		keepa bo new | setl bt=nofile bh=delete noswf | cal s:put(s:label)
 		aug fzyesc | au WinClosed <buffer> cal s:esc() | aug END
 		nn <buffer><silent> i <cmd>cal <SID>fzy()<cr>
 		nn <buffer><silent> <esc> <cmd>close<cr>
