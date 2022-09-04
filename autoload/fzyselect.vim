@@ -41,7 +41,7 @@ fu! s:cr()
 	cal s:cb(s:dict[dp], i + 1)
 endfu
 
-fu! fzyselect#start(items, opts, cb)
+fu! fzyselect#start(items, opts, cb) abort
 	if empty(s:li)
 		for i in a:items
 			let l = get(a:opts, 'format_item', {j -> type(j) == 1 ? j : string(j)})(i)
