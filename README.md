@@ -78,7 +78,7 @@ fu! s:buffer(i) abort
 	en
 endfu
 nn <c-b> <cmd>cal fzyselect#start(
-			\filter(range(1, bufnr('$')), 'buflisted(v:val)'),
-			\#{format_item: {i->split(execute('ls!'), "\n")[i-1]}},
-			\{li-><SID>buffer(li)})<cr>
+			\ filter(range(1, bufnr('$')), 'buflisted(v:val)'),
+			\ #{format_item: {i->split(execute('ls!'), "\n")[i-1]}},
+			\ {li-><SID>buffer(li)})<cr>
 ```
