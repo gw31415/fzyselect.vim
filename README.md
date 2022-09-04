@@ -45,6 +45,7 @@ Fuzzy search for lines of the current buffer.
 ```vim
 nn gl <cmd>cal fzyselect#start(getline(1, '$'), {}, {_,i->i==v:null?v:null:cursor(i, 0)})<cr>
 ```
+<img width="686" alt="image" src="https://user-images.githubusercontent.com/24710985/188313240-0d3e1ce5-401b-4798-a1a2-9c8e3eec0235.png">
 
 ### Files
 Fuzzy search for files of the working directory.
@@ -68,6 +69,8 @@ fu! s:edit(path) abort
 endfu
 nn <c-p> <cmd>cal fzyselect#start(<SID>glob('.'), {}, {p-><SID>edit(p)})<cr>
 ```
+<img width="686" alt="image" src="https://user-images.githubusercontent.com/24710985/188313286-7a065b36-950b-43cd-8c1a-837dfd902fca.png">
+
 
 ### Buffers
 Fuzzy switcher of buffers.
@@ -82,3 +85,4 @@ nn <c-b> <cmd>cal fzyselect#start(
 			\ #{format_item: {i->split(execute('ls!'), "\n")[i-1]}},
 			\ {li-><SID>buffer(li)})<cr>
 ```
+<img width="686" alt="image" src="https://user-images.githubusercontent.com/24710985/188313384-24b6f7c7-3d86-48a4-af72-c580755932f0.png">
