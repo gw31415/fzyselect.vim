@@ -9,12 +9,12 @@ The `vim.ui.select` implemented in Neovim is simple and extensible.
 There are also several well-designed extension plugins based on it
 (e.g. [dressing.nvim](https://github.com/stevearc/dressing.nvim)).
 
-This plugin is one such extensions. As a feature, it uses a built-in `matchfuzzy`
+This plugin is one such extensions. As a feature, it uses a built-in `matchfuzzypos`
 function to speed up the search process. Also, for the minimalists (or following the UNIX philosophy),
 it has few extra functions, keymaps and commands as possible.
 
-Vim does not have `vim.ui.select`, but this plugin is implemented in Vim scripts
-(not Vim9 scripts), so you can use it in Vim as well as Neovim.
+You can use this plugin in Vim as well as Neovim. Except exporting code for Lua,
+the all of this plugin is written in only Vim scripts (not Vim9 scripts).
 
 ## Installation
 
