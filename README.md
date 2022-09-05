@@ -33,6 +33,31 @@ call dein#add('gw31415/fzyselect.vim')
 use 'gw31415/fzyselect.vim'
 ```
 
+### Key mappings
+No default keymaps are provided.
+
+#### Vim Scripts
+```vim
+fu! s:fzy_keymap()
+	nmap <buffer> i <Plug>(fzyselect-fzy)
+	nmap <buffer> <cr> <Plug>(fzyselect-retu)
+	nmap <buffer> <esc> <cmd>clo<cr>
+endfu
+au FileType fzyselect cal <SID>fzy_keymap()
+```
+
+#### Lua
+```lua
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = 'fzyselect',
+	callback = function ()
+		vim.keymap.set('n', 'i','<Plug>(fzyselect-fzy)', { buffer = true })
+		vim.keymap.set('n', '<cr>','<Plug>(fzyselect-retu)', { buffer = true })
+		vim.keymap.set('n', '<esc>','<cmd>clo<cr>', { buffer = true })
+	end
+})
+```
+
 ### For Neovim users: `vim.ui.select`
 If you want to replace `vim.ui.select` with this plugin's,
 you can directly assign the function `require 'fzyselect'.start`.
@@ -62,14 +87,13 @@ require 'fzyselect'.start({'apple', 'banana', 'chocolate'}, {},
 	end)
 ```
 
-On the split window that appears then you can use the usual keymaps you set up,
-but three keymaps are added.
+On the split window that appears then you can use the usual keymaps you set up.
+To operate fuzzy selecting, you need to set up two keymaps:
 
-| mode | key | |
-:---: | :---: | :---
-| `n` | `i` | Start fuzzy search. |
-| `n` | `<cr>` | Select the item. |
-| `n` | `<esc>` | Close the window. |
+| Key                      | Usage                |
+ :------------------------ | :-------------------
+| `<Plug>(fzyselect-fzy)`  | Launch fuzzy search. |
+| `<Plug>(fzyselect-retu)` | Select the item.     |
 
 
 ## Configuration Example
