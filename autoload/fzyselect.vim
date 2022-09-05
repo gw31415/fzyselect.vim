@@ -47,7 +47,7 @@ fu! fzyselect#start(items, opts, cb) abort
 			let l = get(a:opts, 'format_item', {j -> type(j) == 1 ? j : string(j)})(i)
 			cal add(s:li, l) | let s:dict[l] = i
 		endfo
-		let s:cb = a:cb
+		let s:cb = a:cb | echo get(a:opts, 'prompt', 'Select one')
 		keepa bo new | setl bt=nofile bh=delete noswf ft=fzyselect | cal s:put(s:li)
 		aug fzyesc | au WinClosed <buffer> cal s:esc() | aug END
 		nn <buffer> <Plug>(fzyselect-fzy) <cmd>cal <SID>i()<cr>
