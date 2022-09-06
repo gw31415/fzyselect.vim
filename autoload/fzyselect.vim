@@ -18,7 +18,7 @@ fu! s:pv(li)
 			cal matchaddpos('IncSearch', [[l, byteidx(ms[l-1], c)+1]])
 		endfo
 	endfo
-	keepj norm! gg
+	keepj cal cursor(0, 0)
 	redr
 endfu
 
