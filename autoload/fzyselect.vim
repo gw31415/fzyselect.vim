@@ -42,7 +42,9 @@ fu! s:rt()
 endfu
 
 fu! fzyselect#start(items, opts, cb) abort
-	if empty(s:li)
+	if empty(a:items) || !empty(s:li)
+		cal s:esc()
+	el
 		for i in a:items
 			let l = get(a:opts, 'format_item', {j -> type(j) == 1 ? j : string(j)})(i)
 			cal add(s:li, l) | let s:dict[l] = i
