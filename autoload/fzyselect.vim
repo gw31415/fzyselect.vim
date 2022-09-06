@@ -6,12 +6,12 @@ fu! s:put(li)
 	setl noma
 endfu
 
-fu! s:pv(li)
+fu! s:pv()
 	let input = getcmdline()
 	if empty(input)
-		cal s:put(a:li) | retu
+		cal s:put(s:li) | retu
 	en
-	let [ms, pos, _] = matchfuzzypos(a:li, input) | let mlen = len(ms)
+	let [ms, pos, _] = matchfuzzypos(s:li, input) | let mlen = len(ms)
 	cal s:put(ms)
 	for l in range(1, mlen)
 		for c in pos[l-1]
@@ -23,7 +23,7 @@ fu! s:pv(li)
 endfu
 
 fu! s:i()
-	aug fzy | au CmdlineChanged <buffer> cal s:pv(s:li) | aug END
+	aug fzy | au CmdlineChanged <buffer> cal s:pv() | aug END
 	cal input(g:fzyselect_prompt) | au! fzy
 endfu
 
@@ -43,7 +43,7 @@ endfu
 
 fu! fzyselect#start(items, opts, cb) abort
 	if empty(a:items) || !empty(s:li)
-		cal s:esc()
+		cal a:cb(v:null, v:null)
 	el
 		for i in a:items
 			let l = get(a:opts, 'format_item', {j -> type(j) == 1 ? j : string(j)})(i)
