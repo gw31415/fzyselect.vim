@@ -1,7 +1,7 @@
 let [s:li, s:dict] = [[], {}]
 
 fu! s:put(li)
-	setl ma | %d | cal clearmatches() | exe 'res ' .. min([len(a:li), 8])
+	setl ma | %d | cal clearmatches() | exe 'res ' .. min([len(a:li), g:fzyselect_maxheight])
 	keepj cal setline(1, a:li)
 	setl noma
 endfu
@@ -15,7 +15,7 @@ fu! s:pv(li)
 	cal s:put(ms)
 	for l in range(1, mlen)
 		for c in pos[l-1]
-			cal matchaddpos('IncSearch', [[l, byteidx(ms[l-1], c)+1]])
+			cal matchaddpos(g:fzyselect_higroup, [[l, byteidx(ms[l-1], c)+1]])
 		endfo
 	endfo
 	keepj cal cursor(0, 0)
@@ -24,7 +24,7 @@ endfu
 
 fu! s:i()
 	aug fzy | au CmdlineChanged <buffer> cal s:pv(s:li) | aug END
-	cal input('>>> ') | au! fzy
+	cal input(g:fzyselect_prompt) | au! fzy
 endfu
 
 fu! s:esc()
