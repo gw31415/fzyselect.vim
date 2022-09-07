@@ -45,7 +45,8 @@ fu! fzyselect#start(items, opts, cb) abort
 	if empty(a:items) || !empty(s:li)
 		cal a:cb(v:null, v:null)
 	el
-		bo new | exec 'setl bt=nofile bh=delete noswf ft=fzyselect stl=' .. fnameescape(get(a:opts, 'prompt', 'Select one:'))
+		keepa bo new | exec 'setl bt=nofile bh=delete noswf ft=fzyselect stl='
+					\.. substitute(fnameescape(get(a:opts, 'prompt', 'Select one')), '\\%', '%%', 'g')
 		for i in a:items
 			let l = get(a:opts, 'format_item', {j -> type(j) == 1 ? j : string(j)})(i)
 			cal add(s:li, l) | let s:dict[l] = i
