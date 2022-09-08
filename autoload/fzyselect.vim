@@ -17,7 +17,7 @@ endfu
 fu! s:pv()
 	let input = getcmdline()
 	if empty(input)
-		cal s:put(b:li) | retu
+		let b:pos = [] | cal s:put(b:li) | retu
 	en
 	let [b:ms, b:pos, _] = matchfuzzypos(b:li, input)
 	cal s:put(b:ms) | cal s:hi()
