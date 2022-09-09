@@ -37,11 +37,16 @@ fu! s:i()
 endfu
 
 fu! s:rt(cb)
-	let dp = getline('.')
-	let i = index(b:li, dp)
-	au! fzyesc
-	let dict = b:dict | clo
-	cal a:cb(dict[dp], i + 1)
+	if empty(b:ms)
+		clo
+		cal a:cb(v:null, v:null)
+	el
+		let dp = getline('.')
+		let i = index(b:li, dp)
+		au! fzyesc
+		let dict = b:dict | clo
+		cal a:cb(dict[dp], i + 1)
+	en
 endfu
 
 fu! fzyselect#start(items, opts, cb) abort
