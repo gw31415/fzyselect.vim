@@ -1,6 +1,6 @@
-fu! s:put(li)
-	setl ma | %d | exe 'res ' .. min([len(a:li), g:fzyselect_maxheight])
-	keepj cal setline(1, a:li)
+fu! s:put()
+	setl ma | %d | exe 'res ' .. min([len(b:ms), g:fzyselect_maxheight])
+	keepj cal setline(1, b:ms)
 	setl noma
 endfu
 
@@ -21,12 +21,11 @@ endfu
 fu! s:pv()
 	let input = getcmdline()
 	if empty(input)
-		let b:pos = []
-		cal s:put(b:li)
+		let [b:ms, b:pos] = [b:li, []]
 	el
 		let [b:ms, b:pos, _] = matchfuzzypos(b:li, input)
-		cal s:put(b:ms)
 	en
+	cal s:put()
 	cal s:hi()
 	keepj cal cursor(0, 0)
 	redr
@@ -56,7 +55,7 @@ fu! fzyselect#start(items, opts, cb) abort
 			let l = get(a:opts, 'format_item', {j -> type(j) == 1 ? j : string(j)})(i)
 			cal add(b:li, l) | let b:dict[l] = i
 		endfo
-		cal s:put(b:li)
+		let b:ms = b:li | cal s:put()
 		aug fzyesc | au WinClosed <buffer> cal b:cb(v:null, v:null) | aug END
 		au! WinScrolled <buffer> cal s:hi()
 		nn <buffer> <Plug>(fzyselect-fzy) <cmd>cal <SID>i()<cr>
