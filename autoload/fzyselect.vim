@@ -1,14 +1,18 @@
 fu! s:put(li)
-	setl ma | %d | cal clearmatches() | exe 'res ' .. min([len(a:li), g:fzyselect_maxheight])
+	setl ma | %d | exe 'res ' .. min([len(a:li), g:fzyselect_maxheight])
 	keepj cal setline(1, a:li)
 	setl noma
 endfu
 
 fu! s:hi()
+	for id in b:hi_ids
+		cal matchdelete(id)
+	endfo
+	let b:hi_ids = []
 	if !empty(b:pos)
 		for l in range(line('w0'), line('w$'))
 			for c in b:pos[l-1]
-				cal matchaddpos(g:fzyselect_higroup, [[l, byteidx(b:ms[l-1], c)+1]])
+				cal add(b:hi_ids, matchaddpos(g:fzyselect_higroup, [[l, byteidx(b:ms[l-1], c)+1]]))
 			endfo
 		endfo
 	en
@@ -17,10 +21,13 @@ endfu
 fu! s:pv()
 	let input = getcmdline()
 	if empty(input)
-		let b:pos = [] | cal s:put(b:li) | retu
+		let b:pos = []
+		cal s:put(b:li)
+	el
+		let [b:ms, b:pos, _] = matchfuzzypos(b:li, input)
+		cal s:put(b:ms)
 	en
-	let [b:ms, b:pos, _] = matchfuzzypos(b:li, input)
-	cal s:put(b:ms) | cal s:hi()
+	cal s:hi()
 	keepj cal cursor(0, 0)
 	redr
 endfu
@@ -44,7 +51,7 @@ fu! fzyselect#start(items, opts, cb) abort
 	el
 		keepa bo new | exec 'setl bt=nofile bh=delete noswf ft=fzyselect stl='
 					\.. substitute(fnameescape(get(a:opts, 'prompt', 'select one')), '\\%', '%%', 'g')
-		let [b:li, b:dict, b:cb, b:pos] = [[], {}, a:cb, []]
+		let [b:li, b:dict, b:cb, b:pos, b:hi_ids] = [[], {}, a:cb, [], []]
 		for i in a:items
 			let l = get(a:opts, 'format_item', {j -> type(j) == 1 ? j : string(j)})(i)
 			cal add(b:li, l) | let b:dict[l] = i
