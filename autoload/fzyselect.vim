@@ -37,13 +37,13 @@ fu! s:i()
 endfu
 
 fu! s:rt(cb)
-	if empty(b:ms) | bd
+	if empty(b:ms) | clo
 	el
 		let dp = getline('.')
 		let i = index(b:li, dp)
 		let args = [b:dict[dp], i + 1]
 		au! fzyesc
-		bd
+		clo
 		cal a:cb(args[0], args[1])
 	en
 endfu
