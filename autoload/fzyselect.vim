@@ -46,7 +46,7 @@ fu! s:rt(cb)
 	el
 		let args = fzyselect#getitem('.')
 		au! fzyesc
-		clo
+		let wid = b:wid | clo | if has('nvim') | cal nvim_set_current_win(wid) | en
 		cal a:cb(args[0], args[1])
 	en
 endfu
@@ -65,9 +65,10 @@ fu! fzyselect#start(items, opts, cb) abort
 	if empty(a:items)
 		cal a:cb(v:null, v:null)
 	el
+		let wid = has('nvim') ? nvim_get_current_win() : v:null
 		keepa bo new | exec 'setl bt=nofile bh=delete noswf ft=fzyselect stl='
 					\.. substitute(fnameescape(get(a:opts, 'prompt', 'select one')), '\\%', '%%', 'g')
-		let [b:opts, b:cb, b:i] = [a:opts, a:cb, ""]
+		let [b:opts, b:cb, b:i, b:wid] = [a:opts, a:cb, "", wid]
 		cal fzyselect#refresh(a:items)
 		aug fzyesc | au WinClosed <buffer> cal b:cb(v:null, v:null) | aug END
 		au! WinScrolled <buffer> cal s:hi()
