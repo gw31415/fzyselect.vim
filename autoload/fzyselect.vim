@@ -1,7 +1,6 @@
 fu! s:put()
-	setl ma | %d | exe 'res ' .. min([len(b:ms), g:fzyselect_maxheight])
-	keepj cal setline(1, b:ms)
-	setl noma
+	setl ma | %d _ | exe 'res ' .. min([len(b:ms), g:fzyselect_maxheight])
+	keepj cal setline(1, b:ms) | setl noma
 endfu
 
 fu! s:hi()
