@@ -71,7 +71,7 @@ fu! fzyselect#start(items, opts, cb) abort
 		cal fzyselect#refresh(a:items)
 		aug fzyesc | au WinClosed <buffer> cal b:cb(v:null, v:null) | aug END
 		au! WinScrolled <buffer> cal s:hi()
-		nn <buffer> <Plug>(fzyselect-fzy) <cmd>cal <SID>i()<cr>
-		nn <buffer> <Plug>(fzyselect-retu) <cmd>cal <SID>rt(b:cb)<cr>
+		nor <buffer> <Plug>(fzyselect-fzy) <cmd>cal <SID>i()<cr>
+		nor <buffer> <Plug>(fzyselect-retu) <cmd>cal <SID>rt(b:cb)<cr>
 	en
 endfu
