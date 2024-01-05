@@ -43,8 +43,8 @@ endfu
 fu! s:rt(cb)
 	if empty(b:ms) | clo
 	el
-		let args = fzyselect#getitem('.')
-		au! fzyesc
+		let [args, wid] = [fzyselect#getitem('.'), b:wid]
+		au! fzyesc | clo | cal win_gotoid(wid)
 		cal a:cb(args[0], args[1])
 	en
 endfu
@@ -68,7 +68,7 @@ fu! fzyselect#start(items, opts, cb) abort
 					\.. substitute(fnameescape(get(a:opts, 'prompt', 'select one')), '\\%', '%%', 'g')
 		let [b:opts, b:cb, b:i, b:wid] = [a:opts, a:cb, "", wid]
 		cal fzyselect#refresh(a:items)
-		aug fzyesc | au WinClosed <buffer> cal b:cb(v:null, v:null) | sil! cal win_gotoid(b:wid) | aug END
+		aug fzyesc | au WinClosed <buffer> cal b:cb(v:null, v:null) | cal win_gotoid(b:wid) | aug END
 		au! WinScrolled <buffer> cal s:hi()
 		nor <buffer> <Plug>(fzyselect-fzy) <cmd>cal <SID>i()<cr>
 		nor <buffer> <Plug>(fzyselect-retu) <cmd>cal <SID>rt(b:cb)<cr>
