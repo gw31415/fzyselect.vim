@@ -1,10 +1,18 @@
-let g:fzyselect_maxheight = 10
+if !exists('g:fzyselect_maxheight')
+	let g:fzyselect_maxheight = 10
+endif
 
-let g:fzyselect_higroup = 'IncSearch'
+if !exists('g:fzyselect_higroup')
+	let g:fzyselect_higroup = 'IncSearch'
+endif
 
-let g:fzyselect_prompt = '>>> '
+if !exists('g:fzyselect_prompt')
+	let g:fzyselect_prompt = '>>> '
+endif
 
-let g:fzyselect_opener = 'bo new'
+if !exists('g:fzyselect_opener')
+	let g:fzyselect_opener = 'bo new'
+endif
 
 if !has('nvim') | finish | endif
 lua<<EOF
