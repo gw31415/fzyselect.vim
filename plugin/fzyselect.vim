@@ -4,6 +4,8 @@ let g:fzyselect_higroup = 'IncSearch'
 
 let g:fzyselect_prompt = '>>> '
 
+let g:fzyselect_opener = 'bo new'
+
 if !has('nvim') | finish | endif
 lua<<EOF
 package.preload['fzyselect'] = function()
