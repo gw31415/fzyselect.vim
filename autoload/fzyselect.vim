@@ -21,8 +21,7 @@ fu! s:i()
 endfu
 
 fu! fzyselect#getitem(lnum) abort
-	let dp = getline(a:lnum)
-	retu [b:dict[dp], index(b:li, dp) + 1]
+	retu {a->[b:dict[a], index(b:li,a)+1]}(getline(a:lnum))
 endfu
 
 fu! s:rt(cb)
@@ -46,9 +45,9 @@ endfu
 fu! fzyselect#start(items, opts, cb) abort
 	if empty(a:items) | cal a:cb(v:null, v:null)
 	el
-		let b:wid = win_getid() | exe 'keepa '..get(g:,'fzyselect_opener','bo new')
+		let wid = win_getid() | exe 'keepa '..get(g:,'fzyselect_opener','bo new')
 		exec 'setl bt=nofile bh=wipe noswf ft=fzyselect stl='..substitute(fnameescape(get(a:opts,'prompt','Select')),'\\%','%%','g')
-		let [b:opts, b:cb, b:i] = [a:opts, a:cb, '']
+		let [b:opts, b:cb, b:i, b:wid] = [a:opts, a:cb, '', wid]
 		cal fzyselect#refresh(a:items)
 		aug fzyesc | au WinClosed <buffer> cal b:cb(v:null, v:null) | sil! cal win_gotoid(b:wid) | aug END
 		au! WinScrolled <buffer> cal s:hi()
