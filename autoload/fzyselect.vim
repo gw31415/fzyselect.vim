@@ -46,10 +46,9 @@ endfu
 fu! fzyselect#start(items, opts, cb) abort
 	if empty(a:items) | cal a:cb(v:null, v:null)
 	el
-		let wid = win_getid()
-		exe 'keepa ' . get(g:, 'fzyselect_opener', 'bo new') | exec 'setl bt=nofile bh=wipe noswf ft=fzyselect stl='
-					\.. substitute(fnameescape(get(a:opts, 'prompt', 'Select')), '\\%', '%%', 'g')
-		let [b:opts, b:cb, b:i, b:wid] = [a:opts, a:cb, '', wid]
+		let b:wid = win_getid() | exe 'keepa '..get(g:,'fzyselect_opener','bo new')
+		exec 'setl bt=nofile bh=wipe noswf ft=fzyselect stl='..substitute(fnameescape(get(a:opts,'prompt','Select')),'\\%','%%','g')
+		let [b:opts, b:cb, b:i] = [a:opts, a:cb, '']
 		cal fzyselect#refresh(a:items)
 		aug fzyesc | au WinClosed <buffer> cal b:cb(v:null, v:null) | sil! cal win_gotoid(b:wid) | aug END
 		au! WinScrolled <buffer> cal s:hi()
