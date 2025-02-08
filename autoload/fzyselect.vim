@@ -41,8 +41,7 @@ fu! fzyselect#refresh(items) abort
 		let l = get(b:opts, 'format_item', {j -> type(j) == 1 ? j : string(j)})(i)
 		cal add(b:li, l) | let b:dict[l] = i
 	endfo
-	let b:ms = b:li | cal s:put()
-	sil! cal s:pv(b:i)
+	let b:ms = b:li | cal s:put() | sil! cal s:pv(b:i)
 endfu
 
 fu! fzyselect#start(items, opts, cb) abort
