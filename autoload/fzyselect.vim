@@ -4,7 +4,7 @@ fu! s:bf()
 endfu
 
 fu! s:hi()
-	cal filter(b:hi_ids, {_,v->matchdelete(v)*0}) | let hi = get(g:,'fzyselect_higroup','IncSearch')
+	cal filter(b:hi_ids,{_,v->matchdelete(v)*0}) | let hi = get(g:,'fzyselect_higroup','IncSearch')
 	if !empty(b:pos)
 		cal map(range(line('w0'),line('w$')), {_,l->map(copy(b:pos[l-1]),{_,c->add(b:hi_ids, matchaddpos(hi,[[l,byteidx(b:ms[l-1],c)+1]]))})})
 	en
@@ -27,9 +27,9 @@ endfu
 fu! s:rt(cb)
 	if empty(b:ms) | clo
 	el
-		let [args, wid] = [fzyselect#getitem('.'), b:wid]
+		let [a, wid] = [fzyselect#getitem('.'), b:wid]
 		au! fzyesc | clo | sil! cal win_gotoid(wid)
-		cal a:cb(args[0], args[1])
+		cal call(a:cb, a)
 	en
 endfu
 
@@ -43,13 +43,13 @@ fu! fzyselect#refresh(items) abort
 endfu
 
 fu! fzyselect#start(items, opts, cb) abort
-	if empty(a:items) | cal a:cb(v:null, v:null)
+	if empty(a:items) | cal a:cb(v:null,v:null)
 	el
 		let wid = win_getid() | exe 'keepa '..get(g:,'fzyselect_opener','bo new')
 		exec 'setl bt=nofile bh=wipe noswf ft=fzyselect stl='..substitute(fnameescape(get(a:opts,'prompt','Select')),'\\%','%%','g')
 		let [b:opts, b:cb, b:i, b:wid] = [a:opts, a:cb, '', wid]
 		cal fzyselect#refresh(a:items)
-		aug fzyesc | au WinClosed <buffer> cal b:cb(v:null, v:null) | sil! cal win_gotoid(b:wid) | aug END
+		aug fzyesc | au WinClosed <buffer> cal b:cb(v:null,v:null) | sil! cal win_gotoid(b:wid) | aug END
 		au! WinScrolled <buffer> cal s:hi()
 		nor <buffer> <Plug>(fzyselect-fzy) <cmd>cal <SID>i()<cr>
 		nor <buffer> <Plug>(fzyselect-retu) <cmd>cal <SID>rt(b:cb)<cr>
