@@ -18,11 +18,7 @@ fu! s:hi()
 endfu
 
 fu! s:pv(i)
-	if empty(a:i)
-		let [b:ms, b:pos] = [b:li, []]
-	el
-		let [b:ms, b:pos, _] = matchfuzzypos(b:li, a:i)
-	en
+	let [b:ms, b:pos; _] = empty(a:i) ? [b:li, []] : get(b:opts, "matchfuzzypos", {a1,a2->matchfuzzypos(a1, a2)})(b:li, a:i)
 	cal s:put()
 	cal s:hi()
 	keepj cal cursor(0, 0)
