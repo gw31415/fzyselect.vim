@@ -10,8 +10,11 @@ There are also several well-designed extension plugins based on it
 (e.g. [dressing.nvim](https://github.com/stevearc/dressing.nvim)).
 
 This plugin is one such extensions. As a feature, it uses a built-in `matchfuzzypos`
-function to speed up the search process. Also, for the minimalists (or following the UNIX philosophy),
+function to speed up the search process (you can even customize the function if you wish).
+
+Also, for the minimalists (or following the UNIX philosophy),
 it has few extra functions, keymaps and commands as possible.
+Also, the source code is very small, too. See [the main code](./autoload/fzyselect.vim).
 
 You can use this plugin in Vim as well as Neovim. Except exporting code for Lua,
 the all of this plugin is written in only Vim scripts (not Vim9 scripts).
@@ -132,7 +135,7 @@ nn <c-p> <cmd>cal fzyselect#start(<SID>glob('.'), {}, {p-><SID>edit(p)})<cr>
 <img width="686" alt="image" src="https://user-images.githubusercontent.com/24710985/188313286-7a065b36-950b-43cd-8c1a-837dfd902fca.png">
 
 ### Buffers
-Fuzzy switcher of buffers.
+If you use Neovim, use [bufmanager.nvim](https://github.com/gw31415/bufmanager.nvim). Below is simpler version.
 
 ```vim
 fu! s:buffer(i) abort
