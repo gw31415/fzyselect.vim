@@ -17,7 +17,7 @@ endfu
 
 fu! s:i()
 	aug fzy | au CmdlineChanged <buffer> cal s:pv(getcmdline()) | aug END
-	let b:i = input(get(g:, 'fzyselect_prompt', '>>> '), b:i) | au! fzy
+	let b:i = input(get(g:, 'fzyselect_prompt', '>> '), b:i) | au! fzy
 endfu
 
 fu! fzyselect#getitem(lnum) abort
