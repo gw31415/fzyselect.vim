@@ -6,15 +6,15 @@ fu! s:hi()
 	cal filter(b:hi_ids,{_,v->matchdelete(v)*0}) | let hi = get(g:,'fzyselect_higroup','IncSearch')
 	let _=empty(b:pos)||type(map(range(line('w0'),line('w$')),{_,l->map(copy(b:pos[l-1]),{_,c->add(b:hi_ids,matchaddpos(hi,[[l,byteidx(b:ms[l-1],c)+1]]))})}))
 endfu
-fu! s:vi(...)
+fu! s:ed(...)
 	let [b:ms,b:pos;_] = a:000
 	cal s:bf() | cal s:hi() | keepj cal cursor(0, 0) | redr
 endfu
-fu! s:pv(i)
-	let _=empty(a:i) ? s:vi(b:li,[]) : get(g:,'fzyselect_match',{li,i,cb->call(cb,matchfuzzypos(li,i))})(b:li,a:i,funcref("<sid>vi"))
+fu! s:fd(i)
+	let _=empty(a:i) ? s:ed(b:li,[]) : get(g:,'fzyselect_match',{li,i,cb->call(cb,matchfuzzypos(li,i))})(b:li,a:i,funcref("<sid>ed"))
 endfu
 fu! s:i()
-	aug fzy | au CmdlineChanged <buffer> cal s:pv(getcmdline()) | aug END
+	aug fzy | au CmdlineChanged <buffer> cal s:fd(getcmdline()) | aug END
 	let b:i = input(get(g:, 'fzyselect_prompt', '>> '), b:i) | au! fzy
 endfu
 fu! fzyselect#getitem(lnum) abort
@@ -34,7 +34,7 @@ fu! fzyselect#refresh(items) abort
 		let l = get(b:opts, 'format_item', {j->type(j)==1? j :string(j)})(i)
 		cal add(b:li, l) | let b:dict[l] = i
 	endfo
-	let b:ms = b:li | cal s:bf() | sil! cal s:pv(b:i)
+	let b:ms = b:li | cal s:bf() | sil! cal s:fd(b:i)
 endfu
 fu! fzyselect#start(items, opts, cb) abort
 	if empty(a:items) | cal a:cb(v:null,v:null)
