@@ -29,7 +29,7 @@ endfu
 fu! fzyselect#getitem(lnum) abort
 	let dp = getline(a:lnum)
 	let i = index(b:li, dp)
-	return [b:dict[dp], i + 1]
+	retu [b:dict[dp], i + 1]
 endfu
 
 fu! s:rt(cb)
