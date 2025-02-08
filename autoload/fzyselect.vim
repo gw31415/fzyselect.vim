@@ -4,10 +4,7 @@ fu! s:put()
 endfu
 
 fu! s:hi()
-	for id in b:hi_ids
-		cal matchdelete(id)
-	endfo
-	let b:hi_ids = []
+	cal filter(b:hi_ids, {_,v->matchdelete(v)*0})
 	if !empty(b:pos)
 		for l in range(line('w0'), line('w$'))
 			for c in b:pos[l-1]
@@ -19,8 +16,7 @@ endfu
 
 fu! s:pv(i)
 	let [b:ms, b:pos; _] = empty(a:i) ? [b:li, []] : get(b:opts, "matchfuzzypos", {a1,a2->matchfuzzypos(a1, a2)})(b:li, a:i)
-	cal s:put()
-	cal s:hi()
+	cal s:put() | cal s:hi()
 	keepj cal cursor(0, 0)
 	redr
 endfu
