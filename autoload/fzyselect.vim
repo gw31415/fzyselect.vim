@@ -5,14 +5,16 @@ endfu
 
 fu! s:hi()
 	cal filter(b:hi_ids,{_,v->matchdelete(v)*0}) | let hi = get(g:,'fzyselect_higroup','IncSearch')
-	if !empty(b:pos)
-		cal map(range(line('w0'),line('w$')), {_,l->map(copy(b:pos[l-1]),{_,c->add(b:hi_ids, matchaddpos(hi,[[l,byteidx(b:ms[l-1],c)+1]]))})})
-	en
+	let _=empty(b:pos)||type(map(range(line('w0'),line('w$')), {_,l->map(copy(b:pos[l-1]),{_,c->add(b:hi_ids,matchaddpos(hi,[[l,byteidx(b:ms[l-1],c)+1]]))})}))
+endfu
+
+fu! s:sh(...)
+	let [b:ms,b:pos;_] = a:000
+	cal s:bf() | cal s:hi() | keepj cal cursor(0, 0) | redr
 endfu
 
 fu! s:pv(i)
-	let [b:ms,b:pos;_] = empty(a:i) ? [b:li,[]] : get(g:,'fzyselect_match',function('matchfuzzypos'))(b:li, a:i)
-	cal s:bf() | cal s:hi() | keepj cal cursor(0, 0) | redr " TODO: async or callback
+	let _=empty(a:i) ? s:sh(b:li,[]) : get(g:,'fzyselect_match',{li,i,cb->call(cb,matchfuzzypos(li,i))})(b:li,a:i,function("<sid>sh"))
 endfu
 
 fu! s:i()
