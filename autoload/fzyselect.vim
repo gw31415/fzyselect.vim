@@ -11,7 +11,7 @@ fu! s:vi(...)
 	cal s:bf() | cal s:hi() | keepj cal cursor(0, 0) | redr
 endfu
 fu! s:pv(i)
-	let _=empty(a:i) ? s:vi(b:li,[]) : get(g:,'fzyselect_match',{li,i,cb->call(cb,matchfuzzypos(li,i))})(b:li,a:i,function("<sid>vi"))
+	let _=empty(a:i) ? s:vi(b:li,[]) : get(g:,'fzyselect_match',{li,i,cb->call(cb,matchfuzzypos(li,i))})(b:li,a:i,funcref("<sid>vi"))
 endfu
 fu! s:i()
 	aug fzy | au CmdlineChanged <buffer> cal s:pv(getcmdline()) | aug END
