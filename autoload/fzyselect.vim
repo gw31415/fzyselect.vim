@@ -8,7 +8,7 @@ fu! s:hi()
 endfu
 fu! s:ed(...)
 	let [b:ms,b:pos;_] = a:000
-	cal s:bf() | cal s:hi() | keepj cal cursor(0, 0) | redr
+	cal s:bf() | cal s:hi() | cal cursor(0,0) | redr
 endfu
 fu! s:fd(i)
 	let _=empty(a:i) ? s:ed(b:li,[]) : get(g:,'fzyselect_match',{li,i,cb->call(cb,matchfuzzypos(li,i))})(b:li,a:i,funcref("<sid>ed"))
