@@ -6,11 +6,7 @@ endfu
 fu! s:hi()
 	cal filter(b:hi_ids, {_,v->matchdelete(v)*0})
 	if !empty(b:pos)
-		for l in range(line('w0'), line('w$'))
-			for c in b:pos[l-1]
-				cal add(b:hi_ids, matchaddpos(g:fzyselect_higroup, [[l, byteidx(b:ms[l-1], c)+1]]))
-			endfo
-		endfo
+		cal map(range(line('w0'),line('w$')), {_,l->map(copy(b:pos[l-1]),{_,c->add(b:hi_ids, matchaddpos(g:fzyselect_higroup,[[l,byteidx(b:ms[l-1],c)+1]]))})})
 	en
 endfu
 
