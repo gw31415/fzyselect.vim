@@ -1,31 +1,25 @@
 fu! s:bf()
-	setl ma | %d _ | exe 'res ' .. min([len(b:ms), get(g:,'fzyselect_maxheight',10)])
+	setl ma | %d_ | exe 'res ' .. min([len(b:ms), get(g:,'fzyselect_maxheight',10)])
 	keepj cal setline(1, b:ms) | setl noma
 endfu
-
 fu! s:hi()
 	cal filter(b:hi_ids,{_,v->matchdelete(v)*0}) | let hi = get(g:,'fzyselect_higroup','IncSearch')
-	let _=empty(b:pos)||type(map(range(line('w0'),line('w$')), {_,l->map(copy(b:pos[l-1]),{_,c->add(b:hi_ids,matchaddpos(hi,[[l,byteidx(b:ms[l-1],c)+1]]))})}))
+	let _=empty(b:pos)||type(map(range(line('w0'),line('w$')),{_,l->map(copy(b:pos[l-1]),{_,c->add(b:hi_ids,matchaddpos(hi,[[l,byteidx(b:ms[l-1],c)+1]]))})}))
 endfu
-
-fu! s:sh(...)
+fu! s:vi(...)
 	let [b:ms,b:pos;_] = a:000
 	cal s:bf() | cal s:hi() | keepj cal cursor(0, 0) | redr
 endfu
-
 fu! s:pv(i)
-	let _=empty(a:i) ? s:sh(b:li,[]) : get(g:,'fzyselect_match',{li,i,cb->call(cb,matchfuzzypos(li,i))})(b:li,a:i,function("<sid>sh"))
+	let _=empty(a:i) ? s:vi(b:li,[]) : get(g:,'fzyselect_match',{li,i,cb->call(cb,matchfuzzypos(li,i))})(b:li,a:i,function("<sid>vi"))
 endfu
-
 fu! s:i()
 	aug fzy | au CmdlineChanged <buffer> cal s:pv(getcmdline()) | aug END
 	let b:i = input(get(g:, 'fzyselect_prompt', '>> '), b:i) | au! fzy
 endfu
-
 fu! fzyselect#getitem(lnum) abort
 	retu {a->[b:dict[a], index(b:li,a)+1]}(getline(a:lnum))
 endfu
-
 fu! s:rt(cb)
 	if empty(b:ms) | clo
 	el
@@ -34,7 +28,6 @@ fu! s:rt(cb)
 		cal call(a:cb, a)
 	en
 endfu
-
 fu! fzyselect#refresh(items) abort
 	let [b:li, b:dict, b:pos, b:hi_ids] = [[], {}, [], []]
 	for i in a:items
@@ -43,7 +36,6 @@ fu! fzyselect#refresh(items) abort
 	endfo
 	let b:ms = b:li | cal s:bf() | sil! cal s:pv(b:i)
 endfu
-
 fu! fzyselect#start(items, opts, cb) abort
 	if empty(a:items) | cal a:cb(v:null,v:null)
 	el
