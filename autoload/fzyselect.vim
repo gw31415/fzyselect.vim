@@ -13,8 +13,7 @@ endfu
 fu! s:pv(i)
 	let [b:ms, b:pos; _] = empty(a:i) ? [b:li, []] : get(g:, "fzyselect_match", {a1,a2->matchfuzzypos(a1, a2)})(b:li, a:i)
 	cal s:put() | cal s:hi()
-	keepj cal cursor(0, 0)
-	redr
+	keepj cal cursor(0, 0) | redr
 endfu
 
 fu! s:i()
@@ -24,8 +23,7 @@ endfu
 
 fu! fzyselect#getitem(lnum) abort
 	let dp = getline(a:lnum)
-	let i = index(b:li, dp)
-	retu [b:dict[dp], i + 1]
+	retu [b:dict[dp], index(b:li, dp) + 1]
 endfu
 
 fu! s:rt(cb)
@@ -48,8 +46,7 @@ fu! fzyselect#refresh(items) abort
 endfu
 
 fu! fzyselect#start(items, opts, cb) abort
-	if empty(a:items)
-		cal a:cb(v:null, v:null)
+	if empty(a:items) | cal a:cb(v:null, v:null)
 	el
 		let wid = win_getid()
 		exe 'keepa ' . get(g:, "fzyselect_opener", "bo new") | exec 'setl bt=nofile bh=wipe noswf ft=fzyselect stl='
