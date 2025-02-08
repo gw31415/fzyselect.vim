@@ -36,7 +36,7 @@ endfu
 fu! fzyselect#refresh(items) abort
 	let [b:li, b:dict, b:pos, b:hi_ids] = [[], {}, [], []]
 	for i in a:items
-		let l = get(b:opts, 'format_item', {j -> type(j) == 1 ? j : string(j)})(i)
+		let l = get(b:opts, 'format_item', {j->type(j)==1? j :string(j)})(i)
 		cal add(b:li, l) | let b:dict[l] = i
 	endfo
 	let b:ms = b:li | cal s:bf() | sil! cal s:pv(b:i)
