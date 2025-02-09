@@ -10,7 +10,7 @@ fu! fzyselect#applyfz(...) abort
 	let [b:ms,b:pos;_] = a:000
 	cal s:ed() | cal s:hi() | cal cursor(0,0) | redr
 endfu
-let s:fz = {i->empty(i)?fzyselect#applyfz(b:li,[]):get(g:,'fzyselect_match',{a->call('fzyselect#applyfz',call('matchfuzzypos',a))})([b:li,i])}
+let s:fz = {i->empty(i)?fzyselect#applyfz(b:li,[]):get(g:,'fzyselect_match',{l,i->call('fzyselect#applyfz',matchfuzzypos(l,i))})(b:li,i)}
 fu! s:i()
 	aug fzy | au CmdlineChanged <buffer> cal s:fz(getcmdline()) | aug END
 	let b:i = input(get(g:,'fzyselect_prompt','>> '), b:i) | au! fzy
