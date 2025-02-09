@@ -15,13 +15,13 @@ fu! fzyselect#input() abort
 	aug fzy | au CmdlineChanged <buffer> cal s:fz(getcmdline()) | aug END
 	let b:i = input(get(g:,'fzyselect_prompt','>> '), b:i) | au! fzy
 endfu
-fu! fzyselect#getitem(lnum) abort
+fu! fzyselect#getitem(lnum='.') abort
 	retu {a->[b:dict[a],index(b:li,a)+1]}(getline(a:lnum))
 endfu
-fu! fzyselect#cr() abort
+fu! fzyselect#cr(lnum='.') abort
 	if empty(b:ms) | clo
 	el
-		let [a, wid, Cb] = [fzyselect#getitem('.'), b:wid, b:cb]
+		let [a, wid, Cb] = [fzyselect#getitem(a:lnum), b:wid, b:cb]
 		au! fzyesc | clo | sil! cal win_gotoid(wid)
 		cal call(Cb, a)
 	en
