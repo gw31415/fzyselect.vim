@@ -55,7 +55,7 @@ vim.api.nvim_create_autocmd('FileType', {
 	pattern = 'fzyselect',
 	callback = function ()
 		vim.keymap.set('n', 'i', require 'fzyselect'.input, { buffer = true })
-		vim.keymap.set('n', '<cr>', function() require 'fzyselect'.cr(vim.v.count or '.') end, { buffer = true })
+		vim.keymap.set('n', '<cr>', "<cmd>cal fzyselect#cr(v:count??'.')<cr>", { buffer = true })
 		vim.keymap.set('n', '<esc>', '<cmd>clo<cr>', { buffer = true })
 	end
 })
