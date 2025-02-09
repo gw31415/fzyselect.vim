@@ -1,20 +1,20 @@
-fu! s:bf()
-	setl ma | %d_ | exe 'res ' .. min([len(b:ms), get(g:,'fzyselect_maxheight',10)])
+fu! s:ed()
+	setl ma | exe '%d_ | res ' .. min([len(b:ms), get(g:,'fzyselect_maxheight',10)])
 	keepj cal setline(1, b:ms) | setl noma
 endfu
 fu! s:hi()
 	cal filter(b:hi_ids,{_,v->matchdelete(v)*0}) | let hi = get(g:,'fzyselect_higroup','IncSearch')
 	let _=empty(b:pos)||type(map(range(line('w0'),line('w$')),{_,l->map(copy(b:pos[l-1]),{_,c->add(b:hi_ids,matchaddpos(hi,[[l,byteidx(b:ms[l-1],c)+1]]))})}))
 endfu
-fu! s:ed(...)
+fu! fzyselect#applyfz(...) abort
 	let [b:ms,b:pos;_] = a:000
-	cal s:bf() | cal s:hi() | cal cursor(0,0) | redr
+	cal s:ed() | cal s:hi() | cal cursor(0,0) | redr
 endfu
-fu! s:fd(i)
-	let _=empty(a:i) ? s:ed(b:li,[]) : get(g:,'fzyselect_match',{li,i,cb->call(cb,matchfuzzypos(li,i))})(b:li,a:i,funcref("<sid>ed"))
+fu! s:fz(i)
+	let _=empty(a:i) ? fzyselect#applyfz(b:li,[]) : get(g:,'fzyselect_match',{li,i->call("fzyselect#applyfz",matchfuzzypos(li,i))})(b:li,a:i)
 endfu
 fu! s:i()
-	aug fzy | au CmdlineChanged <buffer> cal s:fd(getcmdline()) | aug END
+	aug fzy | au CmdlineChanged <buffer> cal s:fz(getcmdline()) | aug END
 	let b:i = input(get(g:, 'fzyselect_prompt', '>> '), b:i) | au! fzy
 endfu
 fu! fzyselect#getitem(lnum) abort
@@ -28,13 +28,13 @@ fu! s:rt(cb)
 		cal call(a:cb, a)
 	en
 endfu
-fu! fzyselect#refresh(items) abort
+fu! fzyselect#swap(items) abort
 	let [b:li, b:dict, b:pos, b:hi_ids] = [[], {}, [], []]
 	for i in a:items
 		let l = get(b:opts, 'format_item', {j->type(j)==1? j :string(j)})(i)
 		cal add(b:li, l) | let b:dict[l] = i
 	endfo
-	let b:ms = b:li | cal s:bf() | sil! cal s:fd(b:i)
+	let b:ms = b:li | cal s:ed() | sil! cal s:fz(b:i)
 endfu
 fu! fzyselect#start(items, opts, cb) abort
 	if empty(a:items) | cal a:cb(v:null,v:null)
@@ -42,7 +42,7 @@ fu! fzyselect#start(items, opts, cb) abort
 		let wid = win_getid() | exe 'keepa '..get(g:,'fzyselect_opener','bo new')
 		exec 'setl bt=nofile bh=wipe noswf ft=fzyselect stl='..substitute(fnameescape(get(a:opts,'prompt','Select')),'\\%','%%','g')
 		let [b:opts, b:cb, b:i, b:wid] = [a:opts, a:cb, '', wid]
-		cal fzyselect#refresh(a:items)
+		cal fzyselect#swap(a:items)
 		aug fzyesc | au WinClosed <buffer> cal b:cb(v:null,v:null) | sil! cal win_gotoid(b:wid) | aug END
 		au! WinScrolled <buffer> cal s:hi()
 		nor <buffer> <Plug>(fzyselect-fzy) <cmd>cal <SID>i()<cr>
