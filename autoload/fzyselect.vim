@@ -4,7 +4,7 @@ fu! s:ed()
 endfu
 fu! s:hi()
 	cal filter(b:hi_ids,{_,v->matchdelete(v)*0}) | let hi = get(g:,'fzyselect_higroup','IncSearch')
-	let _=empty(b:pos)||type(map(range(line('w0'),line('w$')),{_,l->map(copy(b:pos[l-1]),{_,c->add(b:hi_ids,matchaddpos(hi,[[l,byteidx(b:ms[l-1],c)+1]]))})}))
+	let _=empty(b:pos)||id(map(range(line('w0'),line('w$')),{_,l->map(copy(b:pos[l-1]),{_,c->add(b:hi_ids,matchaddpos(hi,[[l,byteidx(b:ms[l-1],c)+1]]))})}))
 endfu
 fu! fzyselect#applyfz(...) abort
 	let [b:ms,b:pos;_] = a:000
