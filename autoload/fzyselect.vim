@@ -11,19 +11,19 @@ fu! fzyselect#applyfz(...) abort
 	cal s:ed() | cal s:hi() | cal cursor(0,0) | redr
 endfu
 let s:fz = {i->empty(i)?fzyselect#applyfz(b:li,[]):get(g:,'fzyselect_match',{l,i->call('fzyselect#applyfz',matchfuzzypos(l,i))})(b:li,i)}
-fu! s:i()
+fu! fzyselect#input() abort
 	aug fzy | au CmdlineChanged <buffer> cal s:fz(getcmdline()) | aug END
 	let b:i = input(get(g:,'fzyselect_prompt','>> '), b:i) | au! fzy
 endfu
 fu! fzyselect#getitem(lnum) abort
 	retu {a->[b:dict[a],index(b:li,a)+1]}(getline(a:lnum))
 endfu
-fu! s:rt(cb)
+fu! fzyselect#cr() abort
 	if empty(b:ms) | clo
 	el
-		let [a, wid] = [fzyselect#getitem('.'), b:wid]
+		let [a, wid, Cb] = [fzyselect#getitem('.'), b:wid, b:cb]
 		au! fzyesc | clo | sil! cal win_gotoid(wid)
-		cal call(a:cb, a)
+		cal call(Cb, a)
 	en
 endfu
 fu! fzyselect#swap(items) abort
@@ -43,7 +43,5 @@ fu! fzyselect#start(items, opts, cb) abort
 		cal fzyselect#swap(a:items)
 		aug fzyesc | au WinClosed <buffer> cal b:cb(v:null,v:null) | sil! cal win_gotoid(b:wid) | aug END
 		au! WinScrolled <buffer> cal s:hi()
-		nor <buffer> <Plug>(fzyselect-fzy) <cmd>cal <SID>i()<cr>
-		nor <buffer> <Plug>(fzyselect-retu) <cmd>cal <SID>rt(b:cb)<cr>
 	en
 endfu
