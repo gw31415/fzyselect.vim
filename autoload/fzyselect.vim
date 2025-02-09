@@ -3,8 +3,8 @@ fu! s:ed()
 	keepj cal setline(1, b:ms) | setl noma
 endfu
 fu! s:hi()
-	cal filter(b:hi_ids,{_,v->matchdelete(v)*0}) | let hi = get(g:,'fzyselect_higroup','IncSearch')
-	let _=empty(b:pos)||id(map(range(line('w0'),line('w$')),{_,l->map(copy(b:pos[l-1]),{_,c->add(b:hi_ids,matchaddpos(hi,[[l,byteidx(b:ms[l-1],c)+1]]))})}))
+	cal filter(b:hids,{_,v->matchdelete(v)*0}) | let hi = get(g:,'fzyselect_higroup','IncSearch')
+	let _=empty(b:pos)||id(map(range(line('w0'),line('w$')),{_,l->map(copy(b:pos[l-1]),{_,c->add(b:hids,matchaddpos(hi,[[l,byteidx(b:ms[l-1],c)+1]]))})}))
 endfu
 fu! fzyselect#applyfz(...) abort
 	let [b:ms,b:pos;_] = a:000
@@ -27,7 +27,7 @@ fu! s:rt(cb)
 	en
 endfu
 fu! fzyselect#swap(items) abort
-	let [b:li, b:dict, b:pos, b:hi_ids] = [[], {}, [], []]
+	let [b:li, b:dict, b:pos, b:hids] = [[], {}, [], []]
 	for i in a:items
 		let l = get(b:opts, 'format_item', {j->type(j)==1? j :string(j)})(i)
 		cal add(b:li, l) | let b:dict[l] = i
