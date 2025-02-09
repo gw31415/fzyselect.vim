@@ -10,15 +10,13 @@ fu! fzyselect#applyfz(...) abort
 	let [b:ms,b:pos;_] = a:000
 	cal s:ed() | cal s:hi() | cal cursor(0,0) | redr
 endfu
-fu! s:fz(i)
-	let _=empty(a:i) ? fzyselect#applyfz(b:li,[]) : get(g:,'fzyselect_match',{li,i->call("fzyselect#applyfz",matchfuzzypos(li,i))})(b:li,a:i)
-endfu
+let s:fz = {i->empty(i)?fzyselect#applyfz(b:li,[]):get(g:,'fzyselect_match',{a->call("fzyselect#applyfz",call("matchfuzzypos",a))})([b:li,i])}
 fu! s:i()
 	aug fzy | au CmdlineChanged <buffer> cal s:fz(getcmdline()) | aug END
 	let b:i = input(get(g:,'fzyselect_prompt','>> '), b:i) | au! fzy
 endfu
 fu! fzyselect#getitem(lnum) abort
-	retu {a->[b:dict[a], index(b:li,a)+1]}(getline(a:lnum))
+	retu {a->[b:dict[a],index(b:li,a)+1]}(getline(a:lnum))
 endfu
 fu! s:rt(cb)
 	if empty(b:ms) | clo
