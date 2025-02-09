@@ -43,7 +43,7 @@ No default keymaps are provided.
 ```vim
 fu! s:fzy_keymap()
 	nmap <buffer> i <cmd>cal fzyselect#input()<cr>
-	nmap <buffer> <cr> <cmd>cal fzyselect#cr()<cr>
+	nmap <buffer> <cr> <cmd>cal fzyselect#cr(v:count??'.')<cr>
 	nmap <buffer> <esc> <cmd>clo<cr>
 endfu
 au FileType fzyselect cal <SID>fzy_keymap()
@@ -55,7 +55,7 @@ vim.api.nvim_create_autocmd('FileType', {
 	pattern = 'fzyselect',
 	callback = function ()
 		vim.keymap.set('n', 'i', require 'fzyselect'.input, { buffer = true })
-		vim.keymap.set('n', '<cr>', require 'fzyselect'.cr, { buffer = true })
+		vim.keymap.set('n', '<cr>', function() require 'fzyselect'.cr(vim.v.count or '.') end, { buffer = true })
 		vim.keymap.set('n', '<esc>', '<cmd>clo<cr>', { buffer = true })
 	end
 })
