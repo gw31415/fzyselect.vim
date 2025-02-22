@@ -1,6 +1,6 @@
 fu! s:ed()
 	setl ma | exe '%d_ | res ' .. min([len(b:ms), get(g:,'fzyselect_maxheight',10)])
-	keepj cal setline(1, b:ms) | setl noma
+	keepj cal setline(1, b:ms) | doau TextChanged | setl noma
 endfu
 fu! s:hi()
 	cal filter(b:hids,{_,v->matchdelete(v)*0}) | let hi = get(g:,'fzyselect_higroup','IncSearch')
