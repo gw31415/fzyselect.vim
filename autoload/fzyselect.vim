@@ -8,7 +8,7 @@ fu! s:hi()
 endfu
 fu! fzyselect#applyfz(...) abort
 	let [b:ms,b:pos;_] = a:000
-	cal s:ed() | cal s:hi() | cal cursor(0,0) | redr
+	cal s:ed() | cal s:hi() | cal cursor(1,empty(b:pos)?1:b:pos[0][0]+1) | redr
 endfu
 let s:fz = {i->empty(i)?fzyselect#applyfz(b:li,[]):get(g:,'fzyselect_match',{l,i->call('fzyselect#applyfz',matchfuzzypos(l,i))})(b:li,i)}
 fu! fzyselect#input() abort
