@@ -16,7 +16,7 @@ fu! fzyselect#input() abort
 	let b:i = input(get(g:,'fzyselect_prompt','>> '), b:i) | au! fzy
 endfu
 fu! fzyselect#getitem(lnum='.') abort
-	retu {a->[b:dict[a],index(b:li,a)+1]}(getline(a:lnum))
+	retu {a->has_key(b:dict,a)?[b:dict[a],index(b:li,a)+1]:v:null}(getline(a:lnum))
 endfu
 fu! fzyselect#cr(lnum='.') abort
 	if empty(b:ms) | clo
